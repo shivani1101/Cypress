@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cypress</title>
+</head>
+<body>
+    <br><br><br><br><br><br><br><br>
+    <div class="content">
+        <div class="flex-container">
+
+            <div class="flex-child">
+                <h1 style="text-align: left; margin-left: 3%;">CYPRESS</h1>
+            </div>
+            
+            <div class="flex-child"> 
+                <h2 style="text-align: right; margin-right: 10%;">Ville de Toronto</h2>
+                
+            </div>
+            
+        </div>
+        
+        <hr class="line">
+        <button style="margin-left: 2%;"><a  href="../main.html">Retour</a></button>
+        <div class="flex-container">
+
+            <div class="flex-child">
+                <h2 style="text-align: left; margin-left: 3%;">LIENS RAPIDES >></h4>
+        
+                    <input type="radio" name="slider" id="register">  <label for="a">S'inscrire</label><br>
+                    <input type="radio" name="slider" id="login" >  <label for="a">Connexion</label><br>
+                    <input type="radio" name="slider" id="report">  <label for="a">Signaler un problème</label><br>
+                    <input type="radio" name="slider" id="suggest">  <label for="a">Suggérer</label><br>
+                    <input type="radio" name="slider" id="vote">  <label for="a">Voter</label><br>
+                    <input type="radio" name="slider" id="faq">  <label for="a">FAQ</label><br>
+                    <input type="radio" name="slider" id="contact">  <label for="a">Nous contacter</label><br>
+            
+                    <button style="margin-left: 40%;"><a href="" onclick='myFunction()' id="myLink">ALLER</a></button>
+            
+            </div>
+            
+            <div class="flex-child">
+                <br><br>
+                <img style="height: 200px; width: auto; border-style: solid; border-width: 3px; " src="toronto1.jpg" alt="toronto">
+                
+            </div>
+            <div class="flex-child">
+                <br><br>
+                <img style="height: 200px; width: auto; border-style: solid; border-width: 3px; margin-right: 20px; " src="toronto2.jpg" alt="toronto">
+                
+            </div>
+            
+        </div>
+        <br>
+        <h4 style="margin-left: 50%;">Garder nos rues propres et sûres...</h4>
+
+       
+
+      
+            <br><br>
+            <a class="faq" href="faq.html">FAQ</a>
+            <br><br>
+    </div>
+    <script>
+        function myFunction() {
+       
+            if(document.getElementById('register').checked) {
+                document.getElementById('myLink').href = "registration.html";
+            }
+            else if(document.getElementById('login').checked) {
+                document.getElementById('myLink').href = "login.html";
+            }
+            else if(document.getElementById('report').checked) {
+                document.getElementById('myLink').href = "reporting.html";
+            }
+            else if(document.getElementById('suggest').checked) {
+                document.getElementById('myLink').href = "suggest.html";
+            }
+            else if(document.getElementById('vote').checked) {
+                document.getElementById('myLink').href = "vote.html";
+            }
+            else if(document.getElementById('faq').checked) {
+                document.getElementById('myLink').href = "faq.html";
+            }
+            else if(document.getElementById('contact').checked) {
+                document.getElementById('myLink').href = "contact.html";
+            }
+            
+            
+        }
+    </script>
+</body>
+
+</html>

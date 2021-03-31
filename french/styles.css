@@ -1,0 +1,66 @@
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+   
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+.logo{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+button{
+    text-align: center;
+}
+.faq{
+    
+   margin-left: 90%;
+    
+
+}
+.content{
+    border-color: rgb(196, 162, 93);
+    border-width: 3px;
+    border-style: solid;
+    background-color: lightgray;
+    margin-left: 10%;
+    margin-right: 10%
+}
+
+/* new css */
+
+.line{
+    border: 1px solid grey;
+    margin-top: -10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.question :hover{
+    background-color: grey;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
