@@ -1,53 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Cypress</title>
-</head>
-<body>
-    <br><br><br><br><br><br><br><br>
+  </head>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br />
     <div class="content">
-        <div class="flex-container">
-
-            <div class="flex-child">
-                <h1 style="text-align: left; margin-left: 3%;">CYPRESS</h1>
-            </div>
-            
-            <div class="flex-child"> 
-                <h2 style="text-align: right; margin-right: 10%;">City of Toronto</h2>
-                
-            </div>
-            
+      <div class="flex-container">
+        <div class="flex-child">
+          <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
         </div>
-        
-        <hr class="line">
-        <h4 style="margin-left: 10%; margin-right: 10%;">You are currently at the Cypress Login Page. By loggin into this system, you will be able to report
-            a variety of problems as you have witnessed on the streets of Toronto.
-        </h4>
-<!-- NOTE: This form info will be sent to action_page.php-->
-        <form action="/action_page.php" style="margin-left: 20%;"> 
-            <br>
-            
 
-            <label for="lname">Username:</label>
-            <input type="text" id="user" name="user" > <label for="lname">@cypress.com</label><br><br>
+        <div class="flex-child">
+          <h2 style="text-align: right; margin-right: 10%">City of Toronto</h2>
+        </div>
+      </div>
 
-            <label for="lname">Password:</label>
-            <input type="text" id="pass" name="pass" ><br><br>
+      <hr class="line" />
+      <h4 style="margin-left: 10%; margin-right: 10%">
+        You are currently at the Cypress Login Page. By loggin into this system,
+        you will be able to report a variety of problems as you have witnessed
+        on the streets of Toronto.
+      </h4>
+      <!-- NOTE: This form info will be sent to action_page.php-->
 
-            <input type="submit" value="Register">
-            <button><a href="portal.html">Cancel</a></button> <br><br>
-          </form> 
-          
-          
+      <div style="margin-left: 20%">
+        <br />
+        <h5 id="response"></h5>
 
+        <label for="lname">Username:</label>
+        <input type="text" id="user" name="user" />
+        <label for="lname">@cypress.com</label><br /><br />
 
-       </div>
-       
-   
-</body>
+        <label for="lname">Password:</label>
+        <input type="text" id="pass" name="pass" /><br /><br />
 
+        <input type="submit" id="submit" value="login" />
+        <button><a href="portal.html">Cancel</a></button> <br /><br />
+      </div>
+    </div>
+
+    <script>
+      var submit = document.querySelector("#submit");
+      submit.addEventListener("click", () => {
+        login();
+      });
+
+      function login() {
+        var user = document.querySelector("#user").value;
+        var pass = document.querySelector("#pass").value;
+
+        fetch("https://api-cypress.herokuapp.com/api/user/login", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify({
+            email: user,
+            password: pass,
+          }), // body data type must match "Content-Type" header
+        })
+          .then((res) => res.json())
+          .then((body) => {
+            var error = body.error;
+            var response = body.response;
+
+            if (body.error) {
+              document.querySelector("#response").innerHTML = error;
+            } else {
+              document.querySelector("#response").innerHTML =
+                "successfully logged in!";
+
+              window.sessionStorage.uid = response.uid;
+            }
+          });
+      }
+    </script>
+  </body>
 </html>

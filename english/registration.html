@@ -1,64 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Cypress</title>
-</head>
-<body>
-    <br><br><br><br><br><br><br><br>
+  </head>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br />
     <div class="content">
-        <div class="flex-container">
-
-            <div class="flex-child">
-                <h1 style="text-align: left; margin-left: 3%;">CYPRESS</h1>
-            </div>
-            
-            <div class="flex-child"> 
-                <h2 style="text-align: right; margin-right: 10%;">City of Toronto</h2>
-                
-            </div>
-            
+      <div class="flex-container">
+        <div class="flex-child">
+          <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
         </div>
-        
-        <hr class="line">
-        <h2 style="margin-left: 2%;">Please enter information below:</h2>
-<!-- NOTE: This form info will be sent to action_page.php-->
-        <form action="/action_page.php" style="margin-left: 20%;"> 
-            <br>
-            <label for="fname">First name:</label>
-            <input type="text" id="fname" name="fname" ><br><br>
 
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" name="lname" ><br><br>
+        <div class="flex-child">
+          <h2 style="text-align: right; margin-right: 10%">City of Toronto</h2>
+        </div>
+      </div>
 
-            <label for="lname">Address:</label>
-            <input type="text" id="address" style=" width:500px; " name="address" ><br><br>
+      <hr class="line" />
+      <h2 style="margin-left: 2%">Please enter information below:</h2>
+      <!-- NOTE: This form info will be sent to action_page.php-->
+      <div style="margin-left: 20%">
+        <br />
+        <h5 id="response"></h5>
 
-            <label for="lname">Phone Number:</label>
-            <input type="text" id="phone" name="phone" ><br><br>
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname" /><br /><br />
 
-            <label for="lname">E-mail Address:</label>
-            <input type="text" id="email" name="email" ><br><br>
+        <label for="lname">Last name:</label>
+        <input type="text" id="lname" name="lname" /><br /><br />
 
-            <label for="lname">Username:</label>
-            <input type="text" id="user" name="user" > <label for="lname">@cypress.com</label><br><br>
+        <label for="lname">Address:</label>
+        <input
+          type="text"
+          id="address"
+          style="width: 500px"
+          name="address"
+        /><br /><br />
 
-            <label for="lname">Password:</label>
-            <input type="text" id="pass" name="pass" ><br><br>
+        <label for="lname">Phone Number:</label>
+        <input type="text" id="phone" name="phone" /><br /><br />
 
-            <input type="submit" value="Register">
-            <button><a href="portal.html">Cancel</a></button> <br><br>
-          </form> 
-          
-          
+        <label for="lname">E-mail Address:</label>
+        <input type="text" id="email" name="email" /><br /><br />
 
+        <label for="lname">Username:</label>
+        <input type="text" id="user" name="user" />
+        <label for="lname">@cypress.com</label><br /><br />
 
-       </div>
-       
-   
-</body>
+        <label for="lname">Password:</label>
+        <input type="text" id="pass" name="pass" /><br /><br />
 
+        <input type="submit" id="submit" value="Register" />
+        <button><a href="portal.html">Cancel</a></button> <br /><br />
+      </div>
+    </div>
+
+    <script>
+      var submit = document.querySelector("#submit");
+      submit.addEventListener("click", () => {
+        register();
+      });
+
+      function register() {
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var address = document.getElementById("address").value;
+        var phone = document.getElementById("phone").value;
+        var email = document.getElementById("email").value;
+        var user = document.getElementById("user").value + "@cypress.com";
+        var pass = document.getElementById("pass").value;
+
+        fetch("https://api-cypress.herokuapp.com/api/user/signup", {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "same-origin", // include, *same-origin, omit
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          redirect: "follow", // manual, *follow, error
+          referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify({
+            email: user,
+            password: pass,
+            info: {
+              firstName: fname,
+              lastName: lname,
+              address: address,
+              phone: phone,
+              email: email,
+            },
+          }), // body data type must match "Content-Type" header
+        })
+          .then((res) => res.json())
+          .then((body) => {
+            var error = body.error;
+            var response = body.response;
+
+            if (body.error) {
+              document.querySelector("#response").innerHTML = error;
+            } else {
+              document.querySelector("#response").innerHTML =
+                "successfully registered!";
+            }
+          });
+      }
+    </script>
+  </body>
 </html>
