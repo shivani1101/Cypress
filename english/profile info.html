@@ -26,10 +26,9 @@
         </div>
 
         <hr class="line"><br><br>
-
-            <form action="/action_page.php" style="margin-left: 2%;">
+        <h5 id="response" style="margin-left: 5%;"></h5>
                 
-                <div class="flex-container">
+                <div class="flex-container" style="margin-left:50px;">
 
                     <div class="flex-child">
                         <h4 style="margin-bottom: 2px;">First Name:</h4>
@@ -62,11 +61,49 @@
 
                 </div>
 
-            </form>
-
         <br><br>
         <a class="faq" href="faq.html">FAQ</a>
         <br><br><br>
 
     </div>
+
+    <script>
+        var user = window.sessionStorage.uid;  //user id that will be used to get the users info
+        
+        document.addEventListener('DOMContentLoaded', function(){
+            autoFillUser();
+        })
+
+        function autoFillUser(){    //function that gets the users info and fills the fields with that info
+            fetch("https://api-cypress.herokuapp.com/api/user/info", {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                referrerPolicy: "no-referrer",
+                credentials: "same-origin",
+                headers: {
+                    "Content-type": "application/json",
+                },
+                redirect: "follow",
+                body: JSON.stringify({
+                    uid: user,
+                }),
+            }).then((res) => res.json())
+            .then((body) =>{
+                var err = body.error;
+                var response = body.response;
+
+                if (body.error) {
+                    document.querySelector("#response").innerHTML = err;
+                } else {
+                    document.getElementById("fname").value = response.info.firstName;
+                    document.getElementById("lname").value = response.info.lastName;
+                    document.getElementById("address").value = response.info.address;
+                    document.getElementById("phone").value = response.info.phoneNumber;
+                    document.getElementById("user").value = response.info.username;
+                    document.getElementById("pass").value = response.info.password;
+                }
+            });
+        }    
+    </script>
 </body>
