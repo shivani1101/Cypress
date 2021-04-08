@@ -24,7 +24,14 @@
         </div>
         
         <hr class="line">
-        <button style="margin-left: 2%;"><a  href="../main.html">Back</a></button> <button onClick='logout()'>Logout</button>
+        <div class="flex-container">
+            <div class="flex-child">
+                <button style="margin-left: 2%;"><a  href="../main.html">Back</a></button> <button onClick='logout()'>Logout</button>
+            </div> 
+            <div class="flex-child">
+                <h4 style="margin-left: 70%; margin-top: 0%;" id="currentStat">Status: Not Logged In</h4>
+            </div>
+        </div>
         <div class="flex-container">
 
             <div class="flex-child">
@@ -67,8 +74,21 @@
     </div>
     <script>
         
+       document.addEventListener('DOMContentLoaded', function(){
+            if(window.sessionStorage.uid != undefined){ 
+                displayStatus();
+            } else{
+                return;
+            }
+        });
+        
+        function displayStatus(){
+            document.getElementById("currentStat").innerHTML = "Status: Logged In!";
+        }
+        
         function logout(){
             window.sessionStorage.clear();
+            document.getElementById("currentStat").innerHTML = "Status: Not Logged In";
         }
         
         function myFunction() {
