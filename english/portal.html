@@ -36,6 +36,7 @@
                     <input type="radio" name="slider" id="suggest">  <label for="a">Suggest</label><br>
                     <input type="radio" name="slider" id="vote">  <label for="a">Vote</label><br>
                     <input type="radio" name="slider" id="faq">  <label for="a">FAQ</label><br>
+                    <input type="radio" name="slider" id="profile info">  <label for="a">Profile Info</label><br>
                     <input type="radio" name="slider" id="contact">  <label for="a">Contact Us</label><br>
             
                     <button style="margin-left: 40%;"><a href="" onclick='myFunction()' id="myLink">GO</a></button>
@@ -84,6 +85,9 @@
             }
             else if(document.getElementById('faq').checked) {
                 document.getElementById('myLink').href = "faq.html";
+            }
+            else if(document.getElementById('profile info').checked) {
+                document.getElementById('myLink').href = "profile info.html";
             }
             else if(document.getElementById('contact').checked) {
                 document.getElementById('myLink').href = "contact.html";
