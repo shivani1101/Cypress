@@ -75,7 +75,11 @@
                 document.getElementById('myLink').href = "login.html";
             }
             else if(document.getElementById('report').checked) {
-                document.getElementById('myLink').href = "reporting.html";
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ //checks if the user is logged in(user id is in session storage) and redirects to the login page if they are not 
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "reporting.html";
+                }
             }
             else if(document.getElementById('suggest').checked) {
                 document.getElementById('myLink').href = "suggest.html";
@@ -86,8 +90,12 @@
             else if(document.getElementById('faq').checked) {
                 document.getElementById('myLink').href = "faq.html";
             }
-            else if(document.getElementById('profile info').checked) {
-                document.getElementById('myLink').href = "profile info.html";
+            else if(document.getElementById('profile info').checked) { 
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ //checks if the user is logged in and then redirects to the login page if they are not
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "profile info.html";
+                }
             }
             else if(document.getElementById('contact').checked) {
                 document.getElementById('myLink').href = "contact.html";
