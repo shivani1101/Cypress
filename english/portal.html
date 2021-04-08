@@ -24,7 +24,7 @@
         </div>
         
         <hr class="line">
-        <button style="margin-left: 2%;"><a  href="../main.html">Back</a></button>
+        <button style="margin-left: 2%;"><a  href="../main.html">Back</a></button> <button onClick='logout()'>Logout</button>
         <div class="flex-container">
 
             <div class="flex-child">
@@ -66,6 +66,11 @@
             <br><br>
     </div>
     <script>
+        
+        function logout(){
+            window.sessionStorage.clear();
+        }
+        
         function myFunction() {
        
             if(document.getElementById('register').checked) {
