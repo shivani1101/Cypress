@@ -51,7 +51,7 @@
       });
 
       function login() {
-        var user = document.querySelector("#user").value;
+        var user = document.querySelector("#user").value + "@cypress.com";
         var pass = document.querySelector("#pass").value;
 
         fetch("https://api-cypress.herokuapp.com/api/user/login", {
