@@ -84,28 +84,28 @@
         var user = window.sessionStorage.uid;
         var address = document.getElementById("address").value;
         if (document.getElementById('problem1').checked) {
-            var problem = 1;
+            var problem = "Utility Failures";
         } 
         else if (document.getElementById('problem2').checked) {
-            var problem = 2;
+            var problem = "Potholes";
         }
         else if (document.getElementById('problem3').checked) {
-            var problem = 3;
+            var problem = "City Property Vandalism";
         }
         else if (document.getElementById('problem4').checked) {
-            var problem = 4;
+            var problem = "Eroded Streets";
         }
         else if (document.getElementById('problem5').checked) {
-            var problem = 5;
+            var problem = "Tree Collapse";
         }
         else if (document.getElementById('problem6').checked) {
-            var problem = 6;
+            var problem = "Flooded Streets";
         }
         else if (document.getElementById('problem7').checked) {
-            var problem = 7;
+            var problem = "Mould and Spore Growth";
         }
         else if (document.getElementById('problem8').checked) {
-            var problem = 8;
+            var problem = "Garbage and Other Road Blocking Objects";
         } else {
             document.getElementById('response').innerHTML = "No Problem Specified";
             return;
