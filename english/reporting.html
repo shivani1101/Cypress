@@ -24,42 +24,186 @@
         </div>
         
         <hr class="line"><br>
-        <form action="/action_page.php" style="margin-left: 5%; margin-right: 5%;"> 
+        <div style="margin-left: 5%; margin-right: 5%;"> 
             <br>
            
 
             <label for="lname">Address:</label>
-            <input type="text" id="address" style=" width:600px; " name="address" ><br><br>
+            <input type="text" id="address" style=" width:600px; " name="address" required> 
+
+            <div id="map"></div><br><br>
 
             <p>PROBLEMS AT THE SITE:</p> 
             <hr style="border: 1px solid rgb(167, 163, 163);"><br>
             <div class="flex-container">
-                    
+                
                 <div class="flex-child">
                     <input type="radio" name="slider" id="problem1">  <label>Utility Failures</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>Potholes</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>City Property Vandalism</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>Eroded Streets</label><br><br>
+                    <input type="radio" name="slider" id="problem2">  <label>Potholes</label><br><br>
+                    <input type="radio" name="slider" id="problem3">  <label>City Property Vandalism</label><br><br>
+                    <input type="radio" name="slider" id="problem4">  <label>Eroded Streets</label><br><br>
+                    <br><br> 
                 </div>
                 
-                <div class="flex-child"> 
-                    <input type="radio" name="slider" id="problem1">  <label>Tree Collapse</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>Flooded Streets</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>Mould and Spore Growth</label><br><br>
-                    <input type="radio" name="slider" id="problem1">  <label>Garbage and Other Road Blocking Objects</label><br><br>
+                <div class="flex-child">
+                    <input type="radio" name="slider" id="problem5">  <label>Tree Collapse</label><br><br>
+                    <input type="radio" name="slider" id="problem6">  <label>Flooded Streets</label><br><br>
+                    <input type="radio" name="slider" id="problem7">  <label>Mould and Spore Growth</label><br><br>
+                    <input type="radio" name="slider" id="problem8">  <label>Garbage and Other Road Blocking Objects</label><br><br>
                     <br><br> 
                 </div>
                
             </div>
         
-            <input type="submit" value="Report">
+            <input type="submit" id="sub" value="Report">
             <button><a href="portal.html">Cancel</a></button> <br><br>
+            <h3 id="response"></h3>
 
-          </form> 
+        </div> 
           <br><br>
             <a class="faq" href="faq.html">FAQ</a>
             <br><br>
       </div> 
 </body>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap">
+</script>
+
+<script>
+
+    document.getElementById('sub').addEventListener("click", () => {
+        if (document.getElementById('address').validity.valueMissing){
+            document.getElementById('response').innerHTML = "No Address Specified";
+        } else {
+            submitReport();
+        }
+    });
+
+    function submitReport(){
+        var user = window.sessionStorage.uid;
+        var address = document.getElementById("address").value;
+        if (document.getElementById('problem1').checked) {
+            var problem = 1;
+        } 
+        else if (document.getElementById('problem2').checked) {
+            var problem = 2;
+        }
+        else if (document.getElementById('problem3').checked) {
+            var problem = 3;
+        }
+        else if (document.getElementById('problem4').checked) {
+            var problem = 4;
+        }
+        else if (document.getElementById('problem5').checked) {
+            var problem = 5;
+        }
+        else if (document.getElementById('problem6').checked) {
+            var problem = 6;
+        }
+        else if (document.getElementById('problem7').checked) {
+            var problem = 7;
+        }
+        else if (document.getElementById('problem8').checked) {
+            var problem = 8;
+        } else {
+            document.getElementById('response').innerHTML = "No Problem Specified";
+            return;
+        }
+
+        fetch("https://api-cypress.herokuapp.com/api/report/create", {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                "Content-type": "application/json",
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+                uid: user,
+                report: {
+                    address: address,
+                    problem: problem,     //an integer from 1-8 representing the problem options 
+                }
+            }),
+        }).then((res) => res.json())
+        .then((body) => {
+            var response = body.response;
+            var err = body.error;
+
+            if (body.error) {
+                document.getElementById('response').innerHTML = err;
+            } else {
+                document.getElementById('response').innerHTML = "Report Successfully Added";
+            }
+        });
+    }
+
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: {lat: 43.711351 , lng: -79.376146},
+            zoom: 11,
+            mapTypeId: "roadmap",
+        });
+        // Create the search box and link it to the UI element.
+        const input = document.getElementById("address");
+        const searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener("bounds_changed", () => {
+            searchBox.setBounds(map.getBounds());
+        });
+        let markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener("places_changed", () => {
+            const places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+            return;
+            }
+            // Clear out the old markers.
+            markers.forEach((marker) => {
+            marker.setMap(null);
+            });
+            markers = [];
+            // For each place, get the icon, name and location.
+            const bounds = new google.maps.LatLngBounds();
+            places.forEach((place) => {
+                if (!place.geometry || !place.geometry.location) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+                const icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25),
+                };
+                // Create a marker for each place.
+                markers.push(
+                    new google.maps.Marker({
+                    map,
+                    icon,
+                    title: place.name,
+                    position: place.geometry.location,
+                    })
+                );
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+        });
+    }
+    
+</script>
 
 </html>
