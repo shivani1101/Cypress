@@ -40,6 +40,7 @@
                     <input type="radio" name="slider" id="register">  <label for="a">Register</label><br>
                     <input type="radio" name="slider" id="login" >  <label for="a">Login</label><br>
                     <input type="radio" name="slider" id="report">  <label for="a">Report a Problem</label><br>
+                    <input type="radio" name="slider" id="reports">  <label for="a">My Reports</label><br>
                     <input type="radio" name="slider" id="suggest">  <label for="a">Suggest</label><br>
                     <input type="radio" name="slider" id="vote">  <label for="a">Vote</label><br>
                     <input type="radio" name="slider" id="faq">  <label for="a">FAQ</label><br>
@@ -104,6 +105,13 @@
                     document.getElementById('myLink').href = "login.html";
                 } else {
                     document.getElementById('myLink').href = "reporting.html";
+                }
+            }
+            else if(document.getElementById('reports').checked) {
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "my reports.html";
                 }
             }
             else if(document.getElementById('suggest').checked) {
