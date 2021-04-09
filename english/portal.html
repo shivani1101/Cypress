@@ -97,8 +97,8 @@
             if(document.getElementById('register').checked) {
                 document.getElementById('myLink').href = "registration.html";
             }
-            else if(document.getElementById('login').checked) { // Checks if user is logged in. If false the user will be redirected to the login page. Otherwise the user stays on the portal page.
-                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){
+            else if(document.getElementById('login').checked) { 
+                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){ // Checks if user is logged in. If false the user will be redirected to the login page. Otherwise the user stays on the portal page.
                     return;
                 } else {
                     document.getElementById('myLink').href = "login.html";
