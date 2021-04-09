@@ -1,0 +1,138 @@
+<DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Cypress</title>
+    </head>
+    <body>
+        <br><br><br><br><br><br><br><br>
+        <div class="content">
+            <div class="flex-container">
+    
+                <div class="flex-child">
+                    <h1 style="text-align: left; margin-left: 3%;">CYPRESS</h1>
+                </div>
+                
+                <div class="flex-child"> 
+                    <h2 style="text-align: right; margin-right: 10%;">City of Toronto</h2>
+                    
+                </div>
+                
+            </div>
+            
+            <hr class="line"><br>
+            <div style="margin-left: 5%; margin-right: 5%;"> 
+                <br> 
+    
+                <h1>My Reports:</h1> 
+                <hr style="border: 1px solid rgb(167, 163, 163);"><br>
+                <div class="flex-container">
+                    
+                    <div class="flex-child">
+                        
+                        <div id="reports" class="vertical-menu">
+                        </div>
+            
+                        <input type="submit" id="sub" value="Delete">
+                        <button><a href="portal.html">Edit</a></button>
+                        <button><a href="portal.html">Cancel</a></button> <br><br>
+                        <h3 id="response"></h3>
+
+                    </div>
+                    
+                    <div class="flex-child">
+                        <div id="map"></div>
+                    </div>
+
+                </div>
+
+            </div> 
+              <br><br>
+                <a class="faq" href="faq.html">FAQ</a>
+                <br><br>
+          </div> 
+        
+        <script async
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap">
+        </script>
+
+        <script>
+
+            var user = window.sessionStorage.uid;
+
+            function initMap(){
+
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 43.711351 , lng: -79.376146},
+                    zoom: 11
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                getAllReports();
+            });
+
+            function getAllReports() {
+                fetch("https://api-cypress.herokuapp.com/api/report/all", {
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                }).then((res) => res.json())
+                .then((data) => {
+                    var response = data.response;
+                    var err = data.error;
+                    if (data.error) {
+                        document.getElementById('response').innerHTML = err;
+                    } else {
+                        response.forEach((item, index, arr) => {
+                            var repoID = item.rid;
+                            fetch("https://api-cypress.herokuapp.com/api/report/owner", {
+                                method: 'POST',
+                                mode: 'cors',
+                                cache: 'no-cache',
+                                credentials: 'same-origin',
+                                headers: {
+                                    "Content-type": "application/json",
+                                },
+                                redirect: 'follow',
+                                referrerPolicy: 'no-referrer',
+                                body: JSON.stringify({    
+                                    uid: user,
+                                    rid: repoID, 
+                                })
+                            }).then((res) => res.json())
+                            .then((data) => {
+                                var err = data.error;
+                                var response = data.response;
+                                
+                                if (data.error) {
+                                    document.getElementById('response').innerHTML = err;
+                                } else {
+                                    console.log(response);
+                                    if (response.isOwner) {
+                                        var text = "Location: " + item.report.address + "\n Problem: " + item.report.problem;
+                                        var node = document.createElement("p");
+                                        node.innerHTML = text;
+                                        document.getElementById("reports").appendChild(node);
+                                    } else {
+                                        return;
+                                    }
+                                }
+                            });
+                         
+                        })
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
