@@ -97,18 +97,22 @@
             if(document.getElementById('register').checked) {
                 document.getElementById('myLink').href = "registration.html";
             }
-            else if(document.getElementById('login').checked) {
-                document.getElementById('myLink').href = "login.html";
+            else if(document.getElementById('login').checked) { // Checks if user is logged in. If false the user will be redirected to the login page. Otherwise the user stays on the portal page.
+                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){
+                    return;
+                } else {
+                    document.getElementById('myLink').href = "login.html";
+                }
             }
             else if(document.getElementById('report').checked) {
-                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ //checks if the user is logged in(user id is in session storage) and redirects to the login page if they are not 
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ // Checks if the user is logged in(user id is in session storage) and redirects to the login page if they are not.
                     document.getElementById('myLink').href = "login.html";
                 } else {
                     document.getElementById('myLink').href = "reporting.html";
                 }
             }
             else if(document.getElementById('reports').checked) {
-                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ //must be logged in to access
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ // Must be logged in to access.
                     document.getElementById('myLink').href = "login.html";
                 } else {
                     document.getElementById('myLink').href = "my reports.html";
@@ -124,7 +128,7 @@
                 document.getElementById('myLink').href = "faq.html";
             }
             else if(document.getElementById('profile info').checked) { 
-                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ //must be logged in to access
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){ // Must be logged in to access.
                     document.getElementById('myLink').href = "login.html";
                 } else {
                     document.getElementById('myLink').href = "profile info.html";
