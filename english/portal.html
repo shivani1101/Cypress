@@ -95,7 +95,11 @@
         function myFunction() {
        
             if(document.getElementById('register').checked) {
-                document.getElementById('myLink').href = "registration.html";
+                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){
+                    return;
+                } else {
+                    document.getElementById('myLink').href = "registration.html";
+                }
             }
             else if(document.getElementById('login').checked) { 
                 if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){ // Checks if user is logged in. If false the user will be redirected to the login page. Otherwise the user stays on the portal page.
