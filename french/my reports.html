@@ -1,0 +1,153 @@
+<DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <title>Cypress</title>
+      </head>
+      <body>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+        <div class="content">
+          <div class="flex-container">
+            <div class="flex-child">
+              <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
+            </div>
+  
+            <div class="flex-child">
+              <h2 style="text-align: right; margin-right: 10%">
+                Ville de Toronto
+              </h2>
+            </div>
+          </div>
+  
+          <hr class="line" />
+          <br />
+          <div style="margin-left: 5%; margin-right: 5%">
+            <br />
+  
+            <h1>Mes Rapports:</h1>
+            <hr style="border: 1px solid rgb(167, 163, 163)" />
+            <br />
+            <div class="flex-container">
+              <div class="flex-child">
+                <div id="reports" class="vertical-menu"></div>
+  
+                <input type="submit" id="sub" value="Effacer" />
+                <button><a href="portal.html">Éditer</a></button>
+                <button><a href="portal.html">Annuler</a></button> <br /><br />
+                <h3 id="response"></h3>
+              </div>
+  
+              <div class="flex-child">
+                <div id="map"></div>
+              </div>
+            </div>
+          </div>
+          <br /><br />
+          <a class="faq" href="faq.html">FAQ</a>
+          <br /><br />
+        </div>
+  
+        <script
+          async
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&region=FR&language=fr&libraries=places&callback=initMap"
+        ></script>
+  
+        <script>
+          var user = window.sessionStorage.uid;
+  
+          function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+              center: { lat: 43.711351, lng: -79.376146 },
+              zoom: 11,
+            });
+          }
+  
+          document.addEventListener("DOMContentLoaded", () => {
+            getAllReports();
+          });
+  
+          function getAllReports() {
+            fetch("https://api-cypress.herokuapp.com/api/report/all", {
+              method: "GET",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-type": "application/json",
+              },
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                var response = data.response;
+                var err = data.error;
+                if (data.error) {
+                  document.getElementById("response").innerHTML = err;
+                } else {
+                  response.forEach((item, index, arr) => {
+                    var repoID = item.rid;
+                    fetch("https://api-cypress.herokuapp.com/api/report/owner", {
+                      method: "POST",
+                      mode: "cors",
+                      cache: "no-cache",
+                      credentials: "same-origin",
+                      headers: {
+                        "Content-type": "application/json",
+                      },
+                      redirect: "follow",
+                      referrerPolicy: "no-referrer",
+                      body: JSON.stringify({
+                        uid: user,
+                        rid: repoID,
+                      }),
+                    })
+                      .then((res) => res.json())
+                      .then((data) => {
+                        var err = data.error;
+                        var response = data.response;
+  
+                        if (data.error) {
+                          document.getElementById("response").innerHTML = err;
+                        } else {
+                          console.log(response);
+                          if (response.isOwner) {
+                            var address = item.report.address;
+                            var problem = item.report.problem;
+                            var coordinates = item.report.coordinates;
+                            var lat = coordinates.lat;
+                            var lng = coordinates.lng;
+  
+                            var node = document.createElement("div");
+                            var p = document.createElement("p");
+                            var a = document.createElement("p");
+                            var c = document.createElement("p");
+  
+                            p.innerHTML = "Problem: " + problem;
+                            a.innerHTML = "Address: " + address;
+                            c.innerHTML =
+                              "Coordinates (Lat, Lng): " + lat + ", " + lng;
+  
+                            node.appendChild(p);
+                            node.appendChild(a);
+                            node.appendChild(c);
+  
+                            node.appendChild(document.createElement("br"));
+  
+                            document.getElementById("reports").appendChild(node);
+                          } else {
+                            return;
+                          }
+                        }
+                      });
+                  });
+                }
+              });
+          }
+        </script>
+      </body>
+    </html>
+</DOCTYPE>
