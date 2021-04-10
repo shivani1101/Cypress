@@ -63,7 +63,9 @@
         function initMap() {
           map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 43.711351, lng: -79.376146 },
-            zoom: 11,
+            zoom: 10,
+            mapTypeId: "roadmap",
+            draggableCursor: "default",
           });
         }
 
