@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Cypress</title>
+  </head>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br />
+    <div class="content">
+      <div class="flex-container">
+        <div class="flex-child">
+          <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
+        </div>
+
+        <div class="flex-child">
+          <h2 style="text-align: right; margin-right: 10%">Ville de Toronto</h2>
+        </div>
+      </div>
+
+      <hr class="line" />
+      <br />
+      <div style="margin-left: 5%; margin-right: 5%">
+        <br />
+        <div id="map"></div>
+        <br /><br />
+
+        <h1>Rapports:</h1>
+        <hr style="border: 1px solid rgb(167, 163, 163)" />
+        <br />
+        <div class="flex-container">
+          <div class="flex-child">
+            <div id="reports" class="vertical-menu"></div>
+          </div>
+        </div>
+
+        <button><a href="portal.html">Retourner</a></button> <br /><br />
+      </div>
+      <br /><br />
+
+      <a class="faq" href="faq.html">FAQ</a>
+      <br /><br />
+    </div>
+  </body>
+
+  <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&region=FR&language=fr&libraries=places&callback=initMap"
+  ></script>
+
+  <script>
+    var markers = [];
+
+    function getAllReports() {
+      return fetch("https://api-cypress.herokuapp.com/api/report/all", {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+      }).then((res) => res.json());
+    }
+
+    rankReports();
+    function rankReports() {
+      getAllReports().then((data) => {
+        var similarReportings = [];
+
+        var reports = data.response;
+        for (var i = 0; i < reports.length; i++) {
+          var report = reports[i].report;
+          var address = report.address;
+          var problem = report.problem;
+          var coordinates = report.coordinates;
+          var lat = coordinates.lat;
+          var lng = coordinates.lng;
+
+          var found = false;
+
+          for (var j = 0; j < similarReportings.length; j++) {
+            var compare = similarReportings[j].compare;
+
+            if (problem == compare.problem) {
+              var distance = Math.sqrt(
+                Math.pow(lat - compare.coordinates.lat, 2) +
+                  Math.pow(lng - compare.coordinates.lng, 2)
+              );
+              if (distance <= 0.000407656718) {
+                similarReportings[j].similar.push(report);
+                found = true;
+              }
+            }
+          }
+
+          if (!found) {
+            similarReportings.push({
+              compare: report,
+              similar: [report],
+            });
+          }
+        }
+
+        similarReportings.sort(
+          (a, b) => (a.similar.length - b.similar.length) * -1
+        );
+
+        similarReportings.forEach((x) => {
+          var report = x.compare;
+          var address = report.address;
+          var problem = report.problem;
+          var coordinates = report.coordinates;
+          var lat = coordinates.lat;
+          var lng = coordinates.lng;
+
+          var node = document.createElement("div");
+          var p = document.createElement("p");
+          var a = document.createElement("p");
+          var c = document.createElement("p");
+          var t = document.createElement("p");
+
+          p.innerHTML = "Problème: " + problem;
+          a.innerHTML = "Adresse: " + address;
+          c.innerHTML = "Coordonnées (Lat, Long): " + lat + ", " + lng;
+          t.innerHTML = "Fois rapportés: " + x.similar.length;
+
+          node.appendChild(p);
+          node.appendChild(a);
+          node.appendChild(c);
+          node.appendChild(t);
+
+          node.appendChild(document.createElement("br"));
+
+          document.getElementById("reports").appendChild(node);
+        });
+      });
+    }
+
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 43.711351, lng: -79.376146 },
+        zoom: 10,
+        mapTypeId: "roadmap",
+        draggableCursor: "default",
+      });
+
+      getAllReports().then((data) => {
+        data.response.forEach((x) => {
+          var report = x.report;
+          var address = report.address;
+          var problem = report.problem;
+          var coordinates = report.coordinates;
+          var lat = coordinates.lat;
+          var lng = coordinates.lng;
+
+          markers.push(
+            new google.maps.Marker({
+              position: new google.maps.LatLng(lat, lng),
+              title: "Hello World!",
+            })
+          );
+
+          markers.slice(markers.length - 1).forEach((x) => {
+            x.setMap(map);
+            x.addListener("click", () => {
+              var infowindow = new google.maps.InfoWindow({
+                content: `<div><p>Problème: ${problem}</p><p>Adresse: ${address}</p><p>Coordonnées (Lat, Long): ${lat}, ${lng}</p></div>`,
+              });
+              infowindow.open(map, x);
+            });
+          });
+        });
+      });
+    }
+  </script>
+</html>
