@@ -1,72 +1,160 @@
 <!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Cypress</title>
-</head>
-<body>
-    
-    <br><br><br><br><br><br><br><br>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <title>Cypress</title>
+    </head>
+    <body>
+        
+        <br><br><br><br><br><br><br><br>
 
-    <div class="content">
-        <div class="flex-container">
-            
-            <div class="flex-child">    
-                <h1 style="text-align: left; margin-left: 3%;">Informations sur le profil</h1>
-
-            </div>
-
-            <div class="flex-child">
-                <h2 style="text-align: right; margin-right: 10%">Ville de Toronto</h2>
-
-            </div>
-
-        </div>
-
-        <hr class="line"><br><br>
-
-            <form action="/action_page.php" style="margin-left: 2%;">
+        <div class="content">
+            <div class="flex-container">
                 
-                <div class="flex-container">
-
-                    <div class="flex-child">
-                        <h4 style="margin-bottom: 2px;">Prénom:</h4>
-                        <input type="text" id="fname" name="fname" value="John" size="30px">
-
-                        <h4 style="margin-bottom: 2px;">Nom de famille:</h4>
-                        <input type="text" id="lname" name="lname" value="Doe" size="30px">
-
-                        <h4 style="margin-bottom: 2px;">Adresse:</h4>
-                        <input type="text" id="address" name="address" value="350 Victoria St" size="30px">
-
-                        <h4 style="margin-bottom: 2px;">Numéro de téléphone:</h4>
-                        <input type="text" id="phone" name="phone" value="012-345-6789" size="30px"><br><br>
-
-                        <input type="submit" value="Sauvegarder">
-                        <button><a href="portal.html">Retour</a></button>
-                    </div>
-                    
-                    <div class="flex-child">
-                        <h4 style="margin-bottom: 2px;">Adresse e-mail:</h4>
-                        <input type="text" id="email" name="email" value="JohnD2021@cypress.on.ca" size="30px">
-
-                        <h4 style="margin-bottom: 2px;">Nom d'utilisateur:</h4>
-                        <input type="text" id="user" name="user" value="jd123" size="30px">
-
-                        <h4 style="margin-bottom: 2px;">Mot de passe:</h4>
-                        <input type="text" id="pass" name="pass" value="*******" size="30px">
-                        
-                    </div>
+                <div class="flex-child">    
+                    <h1 style="text-align: left; margin-left: 3%;">Informations sur le profil</h1>
 
                 </div>
 
-            </form>
+                <div class="flex-child">
+                    <h2 style="text-align: right; margin-right: 10%">Ville de Toronto</h2>
 
-        <br><br>
-        <a class="faq" href="faq.html">FAQ</a>
-        <br><br><br>
+                </div>
 
-    </div>
-</body>
+            </div>
+
+            <hr class="line"><br><br>
+            <h5 id="response" style="margin-left: 5%;"></h5>
+                    
+                    <div class="flex-container" style="margin-left:50px;">
+
+                        <div class="flex-child">
+                            <h4 style="margin-bottom: 2px;">Prénom:</h4>
+                            <input type="text" id="fname" name="fname" value="" size="30px">
+
+                            <h4 style="margin-bottom: 2px;">Nom de famille:</h4>
+                            <input type="text" id="lname" name="lname" value="" size="30px">
+
+                            <h4 style="margin-bottom: 2px;">Adresse:</h4>
+                            <input type="text" id="address" name="address" value="" size="30px">
+
+                            <h4 style="margin-bottom: 2px;">Numéro de téléphone:</h4>
+                            <input type="text" id="phone" name="phone" value="" size="30px"><br><br>
+
+                            <input type="submit" id="submission" value="Sauvegarder">
+                            <button><a href="portal.html">Retour</a></button>
+                        </div>
+                        
+                        <div class="flex-child">
+                            <h4 style="margin-bottom: 2px;">Adresse e-mail:</h4>
+                            <input type="text" id="email" name="email" value="" size="30px">
+
+                            <h4 style="margin-bottom: 2px;">Nom d'utilisateur:</h4>
+                            <input type="text" id="user" name="user" value="" size="30px">
+
+                            <h4 style="margin-bottom: 2px;">Mot de passe:</h4>
+                            <input type="text" id="pass" name="pass" value="" size="30px">
+                            
+                        </div>
+
+                    </div>
+
+            <br><br>
+            <a class="faq" href="faq.html">FAQ</a>
+            <br><br><br>
+
+        </div>
+
+        <script>
+            var user = window.sessionStorage.uid;
+            
+            document.addEventListener('DOMContentLoaded', function(){
+                autoFillUser();
+            })
+
+            document.querySelector('#submission').addEventListener('click', function(){
+                editUser();
+            })
+
+            function autoFillUser(){
+                fetch("https://api-cypress.herokuapp.com/api/user/info", {
+                    method: "POST",
+                    mode: "cors",
+                    cache: "no-cache",
+                    referrerPolicy: "no-referrer",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    redirect: "follow",
+                    body: JSON.stringify({
+                        uid: user,
+                    }),
+                }).then((res) => res.json())
+                .then((body) =>{
+                    var err = body.error;
+                    var response = body.response;
+
+                    if (body.error) {
+                        document.querySelector("#response").innerHTML = err;
+                    } else {
+                        document.getElementById("fname").value = response.info.firstName;
+                        document.getElementById("lname").value = response.info.lastName;
+                        document.getElementById("address").value = response.info.address;
+                        document.getElementById("phone").value = response.info.phone;
+                        document.getElementById("email").value = response.info.email;
+                        document.getElementById("user").value = response.info.username;
+                        document.getElementById("pass").value = response.info.password;
+                    }
+                });
+            }
+            
+            function editUser(){
+                var fname = document.getElementById("fname").value;
+                var lname = document.getElementById("lname").value;
+                var phone = document.getElementById("phone").value;
+                var address = document.getElementById("address").value;
+                var email = document.getElementById("email").value;
+                var user = document.getElementById("user").value;
+                var pass = document.getElementById("pass").value;
+
+                fetch("https://api-cypress.herokuapp.com/api/user/edit", {
+                    method: "PUT",
+                    mode: "cors",
+                    cache: "no-cache",
+                    referrerPolicy: "no-referrer",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    redirect: "follow",
+                    body: JSON.stringify({
+                        uid: user,
+                        info: {
+                            firstName: fname,
+                            lastName: lname,
+                            address: address,
+                            phoneNumber: phone,
+                            username: user,
+                            password: pass
+                        }
+                    }),
+                }).then((res) => res.json())
+                .then((body) => {
+                    var err = body.error;
+                    var response = body.response;
+
+                    if (body.err){
+                        document.querySelector("#response").innerHTML = err;
+                    } else{
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    </body>
+
+</html>
