@@ -58,6 +58,8 @@
       <script>
         var user = window.sessionStorage.uid;
 
+        var markers = [];
+
         function initMap() {
           map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: 43.711351, lng: -79.376146 },
@@ -137,8 +139,23 @@
                           node.appendChild(document.createElement("br"));
 
                           document.getElementById("reports").appendChild(node);
-                        } else {
-                          return;
+
+                          markers.push(
+                            new google.maps.Marker({
+                              position: new google.maps.LatLng(lat, lng),
+                              title: "Hello World!",
+                            })
+                          );
+
+                          markers.slice(markers.length - 1).forEach((x) => {
+                            x.setMap(map);
+                            x.addListener("click", () => {
+                              var infowindow = new google.maps.InfoWindow({
+                                content: `<div><p>Problem: ${problem}</p><p>Address: ${address}</p><p>Coordinates (Lat, Lng): ${lat}, ${lng}</p></div>`,
+                              });
+                              infowindow.open(map, x);
+                            });
+                          });
                         }
                       }
                     });
