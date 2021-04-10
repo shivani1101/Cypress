@@ -24,7 +24,14 @@
         </div>
         
         <hr class="line">
-        <button style="margin-left: 2%;"><a  href="../main.html">Retour</a></button>
+        <div class="flex-container">
+            <div class="flex-child">
+                <button style="margin-left: 2%;"><a  href="../main.html">Retour</a></button> <button onClick='logout()'>Se déconnecter</button>
+            </div> 
+            <div class="flex-child">
+                <h4 style="margin-left: 70%; margin-top: 0%;" id="currentStat">Statut: Non Connecté</h4>
+            </div>
+        </div>
         <div class="flex-container">
 
             <div class="flex-child">
@@ -33,9 +40,11 @@
                     <input type="radio" name="slider" id="register">  <label for="a">S'inscrire</label><br>
                     <input type="radio" name="slider" id="login" >  <label for="a">Connexion</label><br>
                     <input type="radio" name="slider" id="report">  <label for="a">Signaler un problème</label><br>
+                    <input type="radio" name="slider" id="reports">  <label for="a">Mes rapports</label><br>
                     <input type="radio" name="slider" id="suggest">  <label for="a">Suggérer</label><br>
                     <input type="radio" name="slider" id="vote">  <label for="a">Voter</label><br>
                     <input type="radio" name="slider" id="faq">  <label for="a">FAQ</label><br>
+                    <input type="radio" name="slider" id="profile info">  <label for="a">Informations sur le profil</label><br>
                     <input type="radio" name="slider" id="contact">  <label for="a">Nous contacter</label><br>
             
                     <button style="margin-left: 40%;"><a href="" onclick='myFunction()' id="myLink">ALLER</a></button>
@@ -65,16 +74,53 @@
             <br><br>
     </div>
     <script>
+
+        document.addEventListener('DOMContentLoaded', function(){
+            if(window.sessionStorage.uid != undefined){ 
+                displayStatus();
+            } else{
+                return;
+            }
+        });
+        
+        function displayStatus(){
+            document.getElementById("currentStat").innerHTML = "Statut: Connecté!";
+        }
+        
+        function logout(){
+            window.sessionStorage.clear();
+            document.getElementById("currentStat").innerHTML = "Statut: Non Connecté";
+        }
+
         function myFunction() {
        
             if(document.getElementById('register').checked) {
-                document.getElementById('myLink').href = "registration.html";
+                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){
+                    return;
+                } else {
+                    document.getElementById('myLink').href = "registration.html";
+                }
             }
             else if(document.getElementById('login').checked) {
-                document.getElementById('myLink').href = "login.html";
+                if(window.sessionStorage.uid != null && window.sessionStorage.uid != undefined){
+                    return;
+                } else {
+                    document.getElementById('myLink').href = "login.html";
+                }
             }
             else if(document.getElementById('report').checked) {
-                document.getElementById('myLink').href = "reporting.html";
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "reporting.html";
+                }
+            }
+            else if(document.getElementById('reports').checked) {
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "my reports.html";
+                }
             }
             else if(document.getElementById('suggest').checked) {
                 document.getElementById('myLink').href = "suggest.html";
@@ -85,10 +131,16 @@
             else if(document.getElementById('faq').checked) {
                 document.getElementById('myLink').href = "faq.html";
             }
+            else if(document.getElementById('profile info').checked) {
+                if(window.sessionStorage.uid == null || window.sessionStorage.uid == undefined){
+                    document.getElementById('myLink').href = "login.html";
+                } else {
+                    document.getElementById('myLink').href = "profile info.html";
+                }
+            }
             else if(document.getElementById('contact').checked) {
                 document.getElementById('myLink').href = "contact.html";
             }
-            
             
         }
     </script>
