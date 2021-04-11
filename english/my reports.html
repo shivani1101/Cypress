@@ -34,10 +34,7 @@
             <div class="flex-child">
               <div id="reports" class="vertical-menu"></div>
 
-              <input type="submit" id="sub" value="Delete" />
-              <button><a href="portal.html">Edit</a></button>
-              <button><a href="portal.html">Cancel</a></button> <br /><br />
-              <h3 id="response"></h3>
+              <button><a href="portal.html">Back</a></button> <br /><br />
             </div>
 
             <div class="flex-child">
@@ -138,6 +135,15 @@
                           node.appendChild(a);
                           node.appendChild(c);
 
+                          var btn = document.createElement("button");
+                          var btnlabel = document.createElement("a");
+                          btnlabel.innerHTML = "Edit";
+                          btnlabel.href = "edit reports.html?rid=" + repoID;
+                          btn.append(btnlabel);
+                          node.appendChild(btnlabel);
+
+                          node.appendChild(document.createElement("br"));
+                          node.appendChild(document.createElement("br"));
                           node.appendChild(document.createElement("br"));
 
                           document.getElementById("reports").appendChild(node);
