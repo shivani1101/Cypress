@@ -71,7 +71,7 @@ table {
 }
 
 .vertical-menu {
-    height:500px;
+    height:400px;
     width:500px;
     overflow-y:scroll;
     background-color:rgb(255, 255, 255);
