@@ -69,3 +69,18 @@ table {
     height: 400px;
     width: 100%;
 }
+
+.vertical-menu {
+    height:300px;
+    width:500px;
+    overflow-y:scroll;
+    background-color:rgb(255, 255, 255);
+    border: 2px solid rgb(194, 194, 194);
+}
+
+.vertical-menu div {
+    background-color:rgb(233, 233, 233);
+    padding-left:3%;
+    padding-top:2%;
+    border-bottom: 2px solid rgb(180, 180, 180);
+}
