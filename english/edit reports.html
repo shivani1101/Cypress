@@ -32,9 +32,10 @@
                     <br />
                     <div class="flex-container">
                         <div class="flex-child" id="report">
-                            <input type="text" value="" id="problem"></br></br>
-                            <input type="text" value="" id="location">
-                            <button><a href="portal.html">Back</a></button> <br /><br />
+                            <label>Problem: </label> <input type="text" value="" id="problem"></br></br>
+                            <label>Location: </label> <input type="text" value="" id="location"><br><br>
+                            <input type="submit" id="save" value="save">
+                            <button><a href="my reports.html">Back</a></button> <br /><br />
                         </div>
 
                         <div class="flex-child">
@@ -42,6 +43,7 @@
                             <div id="map"></div>
                         </div>
                     </div>
+                    <h1 id="response"></h1>
                 </div>
                 <br /><br />
                 <a class="faq" href="faq.html">FAQ</a>
@@ -56,7 +58,42 @@
             <script>
                 let parameters = new URLSearchParams(window.location.search);
                 reportID = parameters.get("rid");
+                var problem1 = document.getElementById("problem").value;
+                var address1 = document.getElementById("address").value;
+                var user = window.sessionStorage.uid;
                 
+                document.getElementById("save").addEventListener("click", () => {
+                    fetch("https://api-cypress.herokuapp.com/api/report/edit", {
+                        method: "PUT",
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                        "Content-type": "application/json",
+                        },
+                        redirect: "follow",
+                        referrerPolicy: "no-referrer",
+                        body: JSON.stringify({
+                            uid: user,
+                            rid: reportID,
+                            report: {
+                                address: address1,
+                                problem: problem1,     
+                            }
+                        }),
+                    }).then((res) => res.json())
+                    .then((data) =>{
+                        var response = data.response;
+                        var err = data.error;
+
+                        if (data.error) {
+                            document.getElementById("response").innerHTML = err;
+                        } else {
+                            document.getElementById("response").innerHTML = response;
+                        }
+                    });
+                });
+
                 document.addEventListener('DOMContentLoaded', () => {
                     fetch("https://api-cypress.herokuapp.com/api/report/info", {
                         method: "POST",
