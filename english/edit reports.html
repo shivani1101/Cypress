@@ -1,298 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Cypress</title>
-  </head>
-  <body>
-    <br /><br /><br /><br /><br /><br /><br /><br />
-    <div class="content">
-      <div class="flex-container">
-        <div class="flex-child">
-          <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
-        </div>
+<DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="stylesheet" href="styles.css" />
+            <title>Cypress</title>
+        </head>
+        <body>
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <div class="content">
+                <div class="flex-container">
+                    <div class="flex-child">
+                        <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
+                    </div>
 
-        <div class="flex-child">
-          <h2 style="text-align: right; margin-right: 10%">City of Toronto</h2>
-        </div>
-      </div>
+                    <div class="flex-child">
+                        <h2 style="text-align: right; margin-right: 10%">
+                        City of Toronto
+                        </h2>
+                    </div>
+                </div>
 
-      <hr class="line" />
-      <br />
-      <div style="margin-left: 5%; margin-right: 5%">
-        <h3 id="rid"></h3>
-        <br />
+                <hr class="line" />
+                <br />
+                <div style="margin-left: 5%; margin-right: 5%">
+                    <br />
 
-        <label for="lname">Address:</label>
-        <input
-          type="text"
-          id="address"
-          style="width: 600px"
-          name="address"
-          required
-        />
+                    <h1>Edit Report:</h1>
+                    <hr style="border: 1px solid rgb(167, 163, 163)" />
+                    <br />
+                    <div class="flex-container">
+                        <div class="flex-child" id="report">
+                            <input type="text" value="" id="problem"></br></br>
+                            <input type="text" value="" id="location">
+                            <button><a href="portal.html">Back</a></button> <br /><br />
+                        </div>
 
-        <div id="map"></div>
-        <br /><br />
+                        <div class="flex-child">
+                            <input type="text" id="address">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <a class="faq" href="faq.html">FAQ</a>
+                <br /><br />
+            </div>
 
-        <p>PROBLEMS AT THE SITE:</p>
-        <hr style="border: 1px solid rgb(167, 163, 163)" />
-        <br />
-        <div class="flex-container">
-          <div class="flex-child">
-            <input type="radio" name="slider" id="problem1" />
-            <label>Utility Failures</label><br /><br />
-            <input type="radio" name="slider" id="problem2" />
-            <label>Potholes</label><br /><br />
-            <input type="radio" name="slider" id="problem3" />
-            <label>City Property Vandalism</label><br /><br />
-            <input type="radio" name="slider" id="problem4" />
-            <label>Eroded Streets</label><br /><br />
-            <br /><br />
-          </div>
+            <script
+                async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap"
+            ></script>
 
-          <div class="flex-child">
-            <input type="radio" name="slider" id="problem5" />
-            <label>Tree Collapse</label><br /><br />
-            <input type="radio" name="slider" id="problem6" />
-            <label>Flooded Streets</label><br /><br />
-            <input type="radio" name="slider" id="problem7" />
-            <label>Mould and Spore Growth</label><br /><br />
-            <input type="radio" name="slider" id="problem8" />
-            <label>Garbage and Other Road Blocking Objects</label><br /><br />
-            <br /><br />
-          </div>
-        </div>
+            <script>
+                let parameters = new URLSearchParams(window.location.search);
+                reportID = parameters.get("rid");
+                
+                document.addEventListener('DOMContentLoaded', () => {
+                    fetch("https://api-cypress.herokuapp.com/api/report/info", {
+                        method: "POST",
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                        "Content-type": "application/json",
+                        },
+                        redirect: "follow",
+                        referrerPolicy: "no-referrer",
+                        body: JSON.stringify({
+                            rid: reportID,
+                        }),
+                    }).then((res) => res.json())
+                    .then((data) =>{
+                        var report = data.report;
+                        var err = data.error;
 
-        <input type="submit" id="sub" value="Save changes" />
-        <button><a href="my reports.html">Back</a></button> <br /><br />
-        <h3 id="response"></h3>
-      </div>
-      <br /><br />
-      <a class="faq" href="faq.html">FAQ</a>
-      <br /><br />
-    </div>
-  </body>
+                        if (data.error) {
+                            document.getElementById("response").innerHTML = err;
+                        } else {
+                            var problem = report.problem;
+                            var address = report.address;
+                            document.querySelector("#address").value = address;
+                            document.getElementById("problem").value = problem;
+                            document.getElementById("location").value = address;
+                        }
+                    });
+                });
 
-  <script
-    async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap"
-  ></script>
+                function getaddress(lat, lng) {
+                    return fetch(
+                        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyB6aG9lGJxMpYCAgrEnXgkkvqNkNFaDrjo`
+                    )
+                        .then((res) => res.json())
+                        .then((data) => {
+                        if (data.results) {
+                            return data.results[0].formatted_address;
+                        }
+                        return "";
+                        });
+                }
+                
+                var marker;
 
-  <script>
-    document.getElementById("sub").addEventListener("click", () => {
-      if (document.getElementById("address").validity.valueMissing) {
-        document.getElementById("response").innerHTML = "No Address Specified";
-      } else {
-        submitReport();
-      }
-    });
+                function initMap() {
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        center: { lat: 43.711351, lng: -79.376146 },
+                        zoom: 11,
+                        mapTypeId: "roadmap",
+                        draggableCursor: "default",
+                    });
+                    const input = document.getElementById("address");
 
-    document.getElementById("rid").innerHTML =
-      "rid: " + new URLSearchParams(window.location.search).get("rid");
+                    const searchBox = new google.maps.places.SearchBox(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-    var marker;
+                    map.addListener("bounds_changed", () => {
+                        searchBox.setBounds(map.getBounds());
+                    });
 
-    function submitReport() {
-      var user = window.sessionStorage.uid;
-      var address = document.getElementById("address").value;
+                    map.addListener("click", (e) => {
+                        if (marker) {
+                        marker.setMap(null);
+                        }
 
-      if (document.getElementById("problem1").checked) {
-        var problem = "Utility Failures";
-      } else if (document.getElementById("problem2").checked) {
-        var problem = "Potholes";
-      } else if (document.getElementById("problem3").checked) {
-        var problem = "City Property Vandalism";
-      } else if (document.getElementById("problem4").checked) {
-        var problem = "Eroded Streets";
-      } else if (document.getElementById("problem5").checked) {
-        var problem = "Tree Collapse";
-      } else if (document.getElementById("problem6").checked) {
-        var problem = "Flooded Streets";
-      } else if (document.getElementById("problem7").checked) {
-        var problem = "Mould and Spore Growth";
-      } else if (document.getElementById("problem8").checked) {
-        var problem = "Garbage and Other Road Blocking Objects";
-      } else {
-        document.getElementById("response").innerHTML = "No Problem Specified";
-        return;
-      }
+                        marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map,
+                        });
 
-      fetch("https://api-cypress.herokuapp.com/api/report/edit", {
-        method: "PUT",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          uid: user,
-          rid: new URLSearchParams(window.location.search).get("rid"),
-          report: {
-            address: address,
-            problem: problem, //an integer from 1-8 representing the problem options
-            coordinates: {
-              lat: marker.position.lat(),
-              lng: marker.position.lng(),
-            },
-          },
-        }),
-      })
-        .then((res) => res.json())
-        .then((body) => {
-          var response = body.response;
-          var err = body.error;
+                        map.panTo(e.latLng);
 
-          if (body.error) {
-            document.getElementById("response").innerHTML = err;
-          } else {
-            document.getElementById("response").innerHTML = "Changes saved!";
-          }
-        });
-    }
+                        getaddress(e.latLng.lat(), e.latLng.lng()).then((address) => {
+                        document.querySelector("#address").value = address;
+                        });
+                    });
 
-    function getaddress(lat, lng) {
-      return fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyB6aG9lGJxMpYCAgrEnXgkkvqNkNFaDrjo`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.results) {
-            return data.results[0].formatted_address;
-          }
-          return "";
-        });
-    }
+                    searchBox.addListener("places_changed", () => {
+                        const places = searchBox.getPlaces().slice(0, 1);
 
-    function initMap() {
-      var rid = new URLSearchParams(window.location.search).get("rid");
-      var report;
-      var problem;
-      var address;
-      var coordinates;
-      var lat;
-      var lng;
+                        if (places.length == 0) {
+                        return;
+                        }
 
-      var mappings = {
-        "Utility Failures": "problem1",
-        Potholes: "problem2",
-        "City Property Vandalism": "problem3",
-        "Eroded Streets": "problem4",
-        "Tree Collapse": "problem5",
-        "Flooded Streets": "problem6",
-        "Mould and Spore Growth": "problem7",
-        "Garbage and Other Road Blocking Objects": "problem8",
-      };
+                        if (marker) {
+                        marker.setMap(null);
+                        }
 
-      fetch("https://api-cypress.herokuapp.com/api/report/info", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-type": "application/json",
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          rid: rid,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
+                        const bounds = new google.maps.LatLngBounds();
 
-          report = data.report;
-          address = report.address;
-          coordinates = report.coordinates;
-          problem = report.problem;
-          lat = coordinates.lat;
-          lng = coordinates.lng;
+                        places.forEach((place) => {
+                        console.log(places.length);
+                        if (!place.geometry || !place.geometry.location) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
 
-          document.getElementById("address").value = address;
-          document.getElementById(mappings[problem]).checked = true;
+                        marker = new google.maps.Marker({
+                            map,
+                            position: place.geometry.location,
+                        });
 
-          var location = new google.maps.LatLng(lat, lng);
-          marker = new google.maps.Marker({
-            position: location,
-            map: map,
-          });
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
+                        });
+                        map.fitBounds(bounds);
+                    });
+                }
 
-          map.panTo(location);
-        });
-
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 43.711351, lng: -79.376146 },
-        zoom: 11,
-        mapTypeId: "roadmap",
-        draggableCursor: "default",
-      });
-
-      const input = document.getElementById("address");
-
-      const searchBox = new google.maps.places.SearchBox(input);
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-      map.addListener("bounds_changed", () => {
-        searchBox.setBounds(map.getBounds());
-      });
-
-      map.addListener("click", (e) => {
-        if (marker) {
-          marker.setMap(null);
-        }
-
-        marker = new google.maps.Marker({
-          position: e.latLng,
-          map: map,
-        });
-
-        map.panTo(e.latLng);
-
-        getaddress(e.latLng.lat(), e.latLng.lng()).then((address) => {
-          document.querySelector("#address").value = address;
-        });
-      });
-
-      searchBox.addListener("places_changed", () => {
-        const places = searchBox.getPlaces().slice(0, 1);
-
-        if (places.length == 0) {
-          return;
-        }
-
-        if (marker) {
-          marker.setMap(null);
-        }
-
-        const bounds = new google.maps.LatLngBounds();
-
-        places.forEach((place) => {
-          console.log(places.length);
-          if (!place.geometry || !place.geometry.location) {
-            console.log("Returned place contains no geometry");
-            return;
-          }
-
-          marker = new google.maps.Marker({
-            map,
-            position: place.geometry.location,
-          });
-
-          if (place.geometry.viewport) {
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        map.fitBounds(bounds);
-      });
-    }
-  </script>
-</html>
+            </script>
+        </body>
+    </html>
+</DOCTYPE>
