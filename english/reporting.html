@@ -50,6 +50,7 @@
             <label>City Property Vandalism</label><br /><br />
             <input type="radio" name="slider" id="problem4" />
             <label>Eroded Streets</label><br /><br />
+            <label>Other:</label> <input type="text" id="other">
             <br /><br />
           </div>
 
@@ -112,6 +113,8 @@
         var problem = "Mould and Spore Growth";
       } else if (document.getElementById("problem8").checked) {
         var problem = "Garbage and Other Road Blocking Objects";
+      } else if(document.getElementById("other").value != null) {
+        var problem = document.getElementById("other").value;
       } else {
         document.getElementById("response").innerHTML = "No Problem Specified";
         return;
