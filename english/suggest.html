@@ -34,6 +34,11 @@
           <div class="flex-child">
             <div id="reports" class="vertical-menu"></div>
           </div>
+
+          <div class="flex-child">
+              <textarea id="suggestion" rows="10" cols="50"></textarea>       
+          </div>
+
         </div><br>
 
         <button><a href="portal.html">Back</a></button> <br /><br />
@@ -75,6 +80,7 @@
         var reports = data.response;
         for (var i = 0; i < reports.length; i++) {
           var report = reports[i].report;
+          var reportID = reports[i].rid;
           var address = report.address;
           var problem = report.problem;
           var coordinates = report.coordinates;
@@ -100,6 +106,7 @@
 
           if (!found) {
             similarReportings.push({
+              repo: reportID,
               compare: report,
               similar: [report],
             });
@@ -112,6 +119,7 @@
 
         similarReportings.forEach((x) => {
           var report = x.compare;
+          var reportInfo = x.repo;
           var address = report.address;
           var problem = report.problem;
           var coordinates = report.coordinates;
@@ -123,6 +131,11 @@
           var a = document.createElement("p");
           var c = document.createElement("p");
           var t = document.createElement("p");
+          var btn = document.createElement('button');
+          btn.innerHTML = "Suggest";
+          btn.addEventListener("click", () => {
+            submitSuggestion(reportInfo);
+          });
 
           p.innerHTML = "Problem: " + problem;
           a.innerHTML = "Address: " + address;
@@ -133,6 +146,7 @@
           node.appendChild(a);
           node.appendChild(c);
           node.appendChild(t);
+          node.appendChild(btn);
 
           node.appendChild(document.createElement("br"));
 
@@ -161,7 +175,7 @@
           markers.push(
             new google.maps.Marker({
               position: new google.maps.LatLng(lat, lng),
-              title: "Hello World!",
+              title: "Location",
             })
           );
 
