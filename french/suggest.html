@@ -34,7 +34,12 @@
           <div class="flex-child">
             <div id="reports" class="vertical-menu"></div>
           </div>
-        </div>
+
+          <div class="flex-child">
+            <textarea id="suggestion" rows="10" cols="50"></textarea>       
+          </div>
+
+        </div><br>
 
         <button><a href="portal.html">Retourner</a></button> <br /><br />
       </div>
@@ -47,7 +52,7 @@
 
   <script
     async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&region=FR&language=fr&libraries=places&callback=initMap"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap"
   ></script>
 
   <script>
@@ -75,6 +80,7 @@
         var reports = data.response;
         for (var i = 0; i < reports.length; i++) {
           var report = reports[i].report;
+          var reportID = reports[i].rid;
           var address = report.address;
           var problem = report.problem;
           var coordinates = report.coordinates;
@@ -100,6 +106,7 @@
 
           if (!found) {
             similarReportings.push({
+              repo: reportID,
               compare: report,
               similar: [report],
             });
@@ -112,6 +119,7 @@
 
         similarReportings.forEach((x) => {
           var report = x.compare;
+          var reportInfo = x.repo;
           var address = report.address;
           var problem = report.problem;
           var coordinates = report.coordinates;
@@ -123,16 +131,22 @@
           var a = document.createElement("p");
           var c = document.createElement("p");
           var t = document.createElement("p");
+          var btn = document.createElement('button');
+          btn.innerHTML = "Suggérer";
+          btn.addEventListener("click", () => {
+            submitSuggestion(reportInfo);
+          });
 
           p.innerHTML = "Problème: " + problem;
           a.innerHTML = "Adresse: " + address;
-          c.innerHTML = "Coordonnées (Lat, Long): " + lat + ", " + lng;
-          t.innerHTML = "Fois rapportés: " + x.similar.length;
+          c.innerHTML = "Coordonnés (Lat, Lng): " + lat + ", " + lng;
+          t.innerHTML = "Temps rapportés: " + x.similar.length;
 
           node.appendChild(p);
           node.appendChild(a);
           node.appendChild(c);
           node.appendChild(t);
+          node.appendChild(btn);
 
           node.appendChild(document.createElement("br"));
 
@@ -161,7 +175,7 @@
           markers.push(
             new google.maps.Marker({
               position: new google.maps.LatLng(lat, lng),
-              title: "Hello World!",
+              title: "Location",
             })
           );
 
@@ -169,7 +183,7 @@
             x.setMap(map);
             x.addListener("click", () => {
               var infowindow = new google.maps.InfoWindow({
-                content: `<div><p>Problème: ${problem}</p><p>Adresse: ${address}</p><p>Coordonnées (Lat, Long): ${lat}, ${lng}</p></div>`,
+                content: `<div><p>Problème: ${problem}</p><p>Adresse: ${address}</p><p>Coordonnés (Lat, Lng): ${lat}, ${lng}</p></div>`,
               });
               infowindow.open(map, x);
             });
