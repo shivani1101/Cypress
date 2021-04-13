@@ -78,9 +78,11 @@
             document.querySelector('#submission').addEventListener('click', function(){
                 editUser();
             })
-
-            function autoFillUser(){ // autofill user information into text fields
-                fetch("https://api-cypress.herokuapp.com/api/user/info", { // fetch user data from database
+            
+            /* Autofill user information into text fields */
+            function autoFillUser(){ 
+                /* fetch user data from database */
+                fetch("https://api-cypress.herokuapp.com/api/user/info", { 
                     method: "POST",
                     mode: "cors",
                     cache: "no-cache",
@@ -100,7 +102,7 @@
           
                     if (body.error) {
                         document.querySelector("#response").innerHTML = err;
-                        } else {                                                            // input information into their respective fields
+                        } else {                                                            // Input information into their respective fields
                         document.getElementById("fname").value = response.info.firstName;
                         document.getElementById("lname").value = response.info.lastName;
                         document.getElementById("address").value = response.info.address;
@@ -112,7 +114,8 @@
                 });
             }
             
-            function editUser(){ //edit user details
+            /* Edit user details */
+            function editUser(){
                 var fname = document.getElementById("fname").value;
                 var lname = document.getElementById("lname").value;
                 var phone = document.getElementById("phone").value;
@@ -120,8 +123,9 @@
                 var email = document.getElementById("email").value;
                 var user = document.getElementById("user").value;
                 var pass = document.getElementById("pass").value;
-
-                fetch("https://api-cypress.herokuapp.com/api/user/edit", {  // send changes to the database
+                
+                /* Send changes to the database */
+                fetch("https://api-cypress.herokuapp.com/api/user/edit", {  
                     method: "PUT",
                     mode: "cors",
                     cache: "no-cache",
@@ -149,7 +153,7 @@
 
                     if (body.err){
                         document.querySelector("#response").innerHTML = err;
-                    } else{                                                  // refresh the page to display the updated information
+                    } else{                                                  // Refresh the page to display the updated information
                         location.reload();
                     }
                 });
