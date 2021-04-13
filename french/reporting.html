@@ -1,209 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Cypress</title>
-</head>
-<body>
-    <br><br><br><br><br><br><br><br>
+  </head>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br />
     <div class="content">
-        <div class="flex-container">
-
-            <div class="flex-child">
-                <h1 style="text-align: left; margin-left: 3%;">CYPRESS</h1>
-            </div>
-            
-            <div class="flex-child"> 
-                <h2 style="text-align: right; margin-right: 10%;">Ville de Toronto</h2>
-                
-            </div>
-            
+      <div class="flex-container">
+        <div class="flex-child">
+          <h1 style="text-align: left; margin-left: 3%">CYPRESS</h1>
         </div>
-        
-        <hr class="line"><br>
-        <div style="margin-left: 5%; margin-right: 5%;"> 
-            <br>
-           
 
-            <label for="lname">Adresse:</label>
-            <input type="text" id="address" style=" width:600px; " name="address" required> 
+        <div class="flex-child">
+          <h2 style="text-align: right; margin-right: 10%">Ville de Toronto</h2>
+        </div>
+      </div>
 
-            <div id="map"></div><br><br>
+      <hr class="line" />
+      <br />
+      <div style="margin-left: 5%; margin-right: 5%">
+        <br />
 
-            <p>PROBLÈMES SUR LE SITE:</p> 
-            <hr style="border: 1px solid rgb(167, 163, 163);"><br>
-            <div class="flex-container">
-                
-                <div class="flex-child">
-                    <input type="radio" name="slider" id="problem1">  <label>Pannes de l'utilitaire</label><br><br>
-                    <input type="radio" name="slider" id="problem2">  <label>Nids-de-poule</label><br><br>
-                    <input type="radio" name="slider" id="problem3">  <label>Vandalisme de propriété de la ville</label><br><br>
-                    <input type="radio" name="slider" id="problem4">  <label>Rues érodées</label><br><br>
-                    <br><br> 
-                </div>
-                
-                <div class="flex-child">
-                    <input type="radio" name="slider" id="problem5">  <label>Réduire l'arbre</label><br><br>
-                    <input type="radio" name="slider" id="problem6">  <label>Rues inondées</label><br><br>
-                    <input type="radio" name="slider" id="problem7">  <label>Croissance des moisissures et des spores</label><br><br>
-                    <input type="radio" name="slider" id="problem8">  <label>Déchets et autres objets bloquant la route</label><br><br>
-                    <br><br> 
-                </div>
-               
-            </div>
-        
-            <input type="submit" id="sub" value="Rapport">
-            <button><a href="portal.html">Annuler</a></button> <br><br>
-            <h3 id="response"></h3>
+        <label for="lname">Adresse:</label>
+        <input
+          type="text"
+          id="address"
+          style="width: 600px"
+          name="address"
+          required
+        />
 
-        </div> 
-          <br><br>
-            <a class="faq" href="faq.html">FAQ</a>
-            <br><br>
-      </div> 
-</body>
+        <div id="map"></div>
+        <br /><br />
 
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&region=FR&language=fr&libraries=places&callback=initMap">
-</script>
+        <p>PROBLÈMES SUR LE SITE:</p>
+        <hr style="border: 1px solid rgb(167, 163, 163)" />
+        <br />
+        <div class="flex-container">
+          <div class="flex-child">
+            <input type="radio" name="slider" id="problem1" />
+            <label>Pannes de l'utilitaire</label><br /><br />
+            <input type="radio" name="slider" id="problem2" />
+            <label>Nids-de-poule</label><br /><br />
+            <input type="radio" name="slider" id="problem3" />
+            <label>Vandalisme de propriété de la ville</label><br /><br />
+            <input type="radio" name="slider" id="problem4" />
+            <label>Rues érodées</label><br /><br />
+            <br /><br />
+          </div>
 
-<script>
+          <div class="flex-child">
+            <input type="radio" name="slider" id="problem5" />
+            <label>Réduire l'arbre</label><br /><br />
+            <input type="radio" name="slider" id="problem6" />
+            <label>Rues inondées</label><br /><br />
+            <input type="radio" name="slider" id="problem7" />
+            <label>Croissance des moisissures et des spores</label><br /><br />
+            <input type="radio" name="slider" id="problem8" />
+            <label>Déchets et autres objets bloquant la route</label><br /><br />
+            <br /><br />
+          </div>
+        </div>
 
-    document.getElementById('sub').addEventListener("click", () => {
-        if (document.getElementById('address').validity.valueMissing){
-            document.getElementById('response').innerHTML = "Aucune Adresse Spécifiée";
-        } else {
-            submitReport();
-        }
+        <input type="submit" id="sub" value="Rapport" />
+        <button><a href="portal.html">Retourner</a></button> <br /><br />
+        <h3 id="response"></h3>
+      </div>
+      <br /><br />
+      <a class="faq" href="faq.html">FAQ</a>
+      <br /><br />
+    </div>
+  </body>
+
+  <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLwHjzJ7zHoPkatUiUayePQ8NIDuYIHho&libraries=places&callback=initMap"
+  ></script>
+
+  <script>
+    document.getElementById("sub").addEventListener("click", () => {
+      if (document.getElementById("address").validity.valueMissing) {
+        document.getElementById("response").innerHTML = "Aucune adresse spécifiée";
+      } else {
+        submitReport();
+      }
     });
 
-    function submitReport(){
-        var user = window.sessionStorage.uid;
-        var address = document.getElementById("address").value;
-        if (document.getElementById('problem1').checked) {
-            var problem = "Pannes de l'utilitaire";
-        } 
-        else if (document.getElementById('problem2').checked) {
-            var problem = "Nids-de-poule";
-        }
-        else if (document.getElementById('problem3').checked) {
-            var problem = "Vandalisme de propriété de la ville";
-        }
-        else if (document.getElementById('problem4').checked) {
-            var problem = "Rues érodées";
-        }
-        else if (document.getElementById('problem5').checked) {
-            var problem = "Réduire l'arbre";
-        }
-        else if (document.getElementById('problem6').checked) {
-            var problem = "Rues inondées";
-        }
-        else if (document.getElementById('problem7').checked) {
-            var problem = "Croissance des moisissures et des spores";
-        }
-        else if (document.getElementById('problem8').checked) {
-            var problem = "Déchets et autres objets bloquant la route";
-        } else {
-            document.getElementById('response').innerHTML = "Aucun Problème Spécifié";
-            return;
-        }
+    var marker;
 
-        fetch("https://api-cypress.herokuapp.com/api/report/create", {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                "Content-type": "application/json",
+    function submitReport() {
+      var user = window.sessionStorage.uid;
+      var address = document.getElementById("address").value;
+
+      if (document.getElementById("problem1").checked) {
+        var problem = "Pannes de l'utilitaire";
+      } else if (document.getElementById("problem2").checked) {
+        var problem = "Nids-de-poule";
+      } else if (document.getElementById("problem3").checked) {
+        var problem = "Vandalisme de propriété de la ville";
+      } else if (document.getElementById("problem4").checked) {
+        var problem = "Rues érodées";
+      } else if (document.getElementById("problem5").checked) {
+        var problem = "Réduire l'arbre";
+      } else if (document.getElementById("problem6").checked) {
+        var problem = "Rues inondées";
+      } else if (document.getElementById("problem7").checked) {
+        var problem = "Croissance des moisissures et des spores";
+      } else if (document.getElementById("problem8").checked) {
+        var problem = "Déchets et autres objets bloquant la route";
+      } else {
+        document.getElementById("response").innerHTML = "Aucun problème spécifié";
+        return;
+      }
+
+      fetch("https://api-cypress.herokuapp.com/api/report/create", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({
+          uid: user,
+          report: {
+            address: address,
+            problem: problem, //an integer from 1-8 representing the problem options
+            coordinates: {
+              lat: marker.position.lat(),
+              lng: marker.position.lng(),
             },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify({
-                uid: user,
-                report: {
-                    address: address,
-                    problem: problem,     //an integer from 1-8 representing the problem options 
-                }
-            }),
-        }).then((res) => res.json())
+          },
+        }),
+      })
+        .then((res) => res.json())
         .then((body) => {
-            var response = body.response;
-            var err = body.error;
+          var response = body.response;
+          var err = body.error;
 
-            if (body.error) {
-                document.getElementById('response').innerHTML = err;
-            } else {
-                document.getElementById('response').innerHTML = "Report Successfully Added";
-            }
+          if (body.error) {
+            document.getElementById("response").innerHTML = err;
+          } else {
+            document.getElementById("response").innerHTML =
+              "Rapport ajouté avec succès";
+          }
+        });
+    }
+
+    function getaddress(lat, lng) {
+      return fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyB6aG9lGJxMpYCAgrEnXgkkvqNkNFaDrjo`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.results) {
+            return data.results[0].formatted_address;
+          }
+          return "";
         });
     }
 
     function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-            center: {lat: 43.711351 , lng: -79.376146},
-            zoom: 11,
-            mapTypeId: "roadmap",
-        });
-        // Create the search box and link it to the UI element.
-        const input = document.getElementById("address");
-        const searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener("bounds_changed", () => {
-            searchBox.setBounds(map.getBounds());
-        });
-        let markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener("places_changed", () => {
-            const places = searchBox.getPlaces();
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 43.711351, lng: -79.376146 },
+        zoom: 11,
+        mapTypeId: "roadmap",
+        draggableCursor: "default",
+      });
+      const input = document.getElementById("address");
 
-            if (places.length == 0) {
+      const searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+      map.addListener("bounds_changed", () => {
+        searchBox.setBounds(map.getBounds());
+      });
+
+      map.addListener("click", (e) => {
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+          position: e.latLng,
+          map: map,
+        });
+
+        map.panTo(e.latLng);
+
+        getaddress(e.latLng.lat(), e.latLng.lng()).then((address) => {
+          document.querySelector("#address").value = address;
+        });
+      });
+
+      searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces().slice(0, 1);
+
+        if (places.length == 0) {
+          return;
+        }
+
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        const bounds = new google.maps.LatLngBounds();
+
+        places.forEach((place) => {
+          console.log(places.length);
+          if (!place.geometry || !place.geometry.location) {
+            console.log("Returned place contains no geometry");
             return;
-            }
-            // Clear out the old markers.
-            markers.forEach((marker) => {
-            marker.setMap(null);
-            });
-            markers = [];
-            // For each place, get the icon, name and location.
-            const bounds = new google.maps.LatLngBounds();
-            places.forEach((place) => {
-                if (!place.geometry || !place.geometry.location) {
-                    console.log("Returned place contains no geometry");
-                    return;
-                }
-                const icon = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25),
-                };
-                // Create a marker for each place.
-                markers.push(
-                    new google.maps.Marker({
-                    map,
-                    icon,
-                    title: place.name,
-                    position: place.geometry.location,
-                    })
-                );
+          }
 
-                if (place.geometry.viewport) {
-                    // Only geocodes have viewport.
-                    bounds.union(place.geometry.viewport);
-                } else {
-                    bounds.extend(place.geometry.location);
-                }
-            });
-            map.fitBounds(bounds);
+          marker = new google.maps.Marker({
+            map,
+            position: place.geometry.location,
+          });
+
+          if (place.geometry.viewport) {
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
         });
+        map.fitBounds(bounds);
+      });
     }
-    
-</script>
-
+  </script>
 </html>
