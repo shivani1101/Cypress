@@ -200,14 +200,13 @@
             }),
           }).then((res) => res.json())
           .then((data) => {
-            var response = data.response;
             var err = data.error;
 
             if (data.error) {
               document.getElementById("response").innerHTML = err;
             } else {
               document.getElementById(reportID).remove();
-              document.getElementById("response").innerHTML = response;
+              document.getElementById("response").innerHTML = "report successfully deleted";
             }
           })
         }
