@@ -182,9 +182,7 @@
               }
             });
         }
-        document.addEventListener("click", () => {
-          deleteReport();
-        })
+
         function deleteReport(reportID) {
           fetch("https://api-cypress.herokuapp.com/api/report/delete", {
             method: 'DELETE',
