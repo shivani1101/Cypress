@@ -69,7 +69,7 @@
         </div>
 
         <script>
-            var user = window.sessionStorage.uid;
+            var userID = window.sessionStorage.uid;
             
             document.addEventListener('DOMContentLoaded', function(){
                 autoFillUser();
@@ -79,8 +79,8 @@
                 editUser();
             })
 
-            function autoFillUser(){
-                fetch("https://api-cypress.herokuapp.com/api/user/info", {
+            function autoFillUser(){ // autofill user information into text fields
+                fetch("https://api-cypress.herokuapp.com/api/user/info", { // fetch user data from database
                     method: "POST",
                     mode: "cors",
                     cache: "no-cache",
@@ -91,20 +91,20 @@
                     },
                     redirect: "follow",
                     body: JSON.stringify({
-                        uid: user,
+                        uid: userID,
                     }),
                 }).then((res) => res.json())
                 .then((body) =>{
                     var err = body.error;
                     var response = body.response;
-
+          
                     if (body.error) {
                         document.querySelector("#response").innerHTML = err;
-                    } else {
+                        } else {                                                            // input information into their respective fields
                         document.getElementById("fname").value = response.info.firstName;
                         document.getElementById("lname").value = response.info.lastName;
                         document.getElementById("address").value = response.info.address;
-                        document.getElementById("phone").value = response.info.phone;
+                        document.getElementById("phone").value = response.info.phoneNumber;
                         document.getElementById("email").value = response.info.email;
                         document.getElementById("user").value = response.info.username;
                         document.getElementById("pass").value = response.info.password;
@@ -112,7 +112,7 @@
                 });
             }
             
-            function editUser(){
+            function editUser(){ //edit user details
                 var fname = document.getElementById("fname").value;
                 var lname = document.getElementById("lname").value;
                 var phone = document.getElementById("phone").value;
@@ -121,7 +121,7 @@
                 var user = document.getElementById("user").value;
                 var pass = document.getElementById("pass").value;
 
-                fetch("https://api-cypress.herokuapp.com/api/user/edit", {
+                fetch("https://api-cypress.herokuapp.com/api/user/edit", {  // send changes to the database
                     method: "PUT",
                     mode: "cors",
                     cache: "no-cache",
@@ -132,7 +132,7 @@
                     },
                     redirect: "follow",
                     body: JSON.stringify({
-                        uid: user,
+                        uid: userID,
                         info: {
                             firstName: fname,
                             lastName: lname,
@@ -149,7 +149,7 @@
 
                     if (body.err){
                         document.querySelector("#response").innerHTML = err;
-                    } else{
+                    } else{                                                  // refresh the page to display the updated information
                         location.reload();
                     }
                 });
