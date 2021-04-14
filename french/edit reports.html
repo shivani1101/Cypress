@@ -16,7 +16,7 @@
         </div>
 
         <div class="flex-child">
-          <h2 style="text-align: right; margin-right: 10%">City of Toronto</h2>
+          <h2 style="text-align: right; margin-right: 10%">Ville de Toronto</h2>
         </div>
       </div>
 
@@ -26,7 +26,7 @@
         <h3 id="rid"></h3>
         <br />
 
-        <label for="lname">Address:</label>
+        <label for="lname">Adresse:</label>
         <input
           type="text"
           id="address"
@@ -38,37 +38,37 @@
         <div id="map"></div>
         <br /><br />
 
-        <p>PROBLEMS AT THE SITE:</p>
+        <p>PROBLÈMES SUR LE SITE:</p>
         <hr style="border: 1px solid rgb(167, 163, 163)" />
         <br />
         <div class="flex-container">
           <div class="flex-child">
             <input type="radio" name="slider" id="problem1" />
-            <label>Utility Failures</label><br /><br />
+            <label>Pannes de l'utilitaire</label><br /><br />
             <input type="radio" name="slider" id="problem2" />
-            <label>Potholes</label><br /><br />
+            <label>Nids-de-poule</label><br /><br />
             <input type="radio" name="slider" id="problem3" />
-            <label>City Property Vandalism</label><br /><br />
+            <label>Vandalisme de propriété de la ville</label><br /><br />
             <input type="radio" name="slider" id="problem4" />
-            <label>Eroded Streets</label><br /><br />
+            <label>Rues érodées</label><br /><br />
             <br /><br />
           </div>
 
           <div class="flex-child">
             <input type="radio" name="slider" id="problem5" />
-            <label>Tree Collapse</label><br /><br />
+            <label>Réduire l'arbre</label><br /><br />
             <input type="radio" name="slider" id="problem6" />
-            <label>Flooded Streets</label><br /><br />
+            <label>Rues inondées</label><br /><br />
             <input type="radio" name="slider" id="problem7" />
-            <label>Mould and Spore Growth</label><br /><br />
+            <label>Croissance des moisissures et des spores</label><br /><br />
             <input type="radio" name="slider" id="problem8" />
-            <label>Garbage and Other Road Blocking Objects</label><br /><br />
+            <label>Déchets et autres objets bloquant la route</label><br /><br />
             <br /><br />
           </div>
         </div>
 
-        <input type="submit" id="sub" value="Save changes" />
-        <button><a href="my reports.html">Back</a></button> <br /><br />
+        <input type="submit" id="sub" value="Sauvegarder les Modifications" />
+        <button><a href="my reports.html">Retourner</a></button> <br /><br />
         <h3 id="response"></h3>
       </div>
       <br /><br />
@@ -85,7 +85,9 @@
   <script>
     document.getElementById("sub").addEventListener("click", () => {
       if (document.getElementById("address").validity.valueMissing) {
-        document.getElementById("response").innerHTML = "No Address Specified";
+        document.getElementById("response").innerHTML = "Aucune adresse spécifiée";
+      } else if (marker == undefined) {
+        document.getElementById("response").innerHTML = "Adresse invalide";
       } else {
         submitReport();
       }
@@ -101,23 +103,23 @@
       var address = document.getElementById("address").value;
 
       if (document.getElementById("problem1").checked) {
-        var problem = "Utility Failures";
+        var problem = "Pannes de l'utilitaire";
       } else if (document.getElementById("problem2").checked) {
-        var problem = "Potholes";
+        var problem = "Nids-de-poule";
       } else if (document.getElementById("problem3").checked) {
-        var problem = "City Property Vandalism";
+        var problem = "Vandalisme de propriété de la ville";
       } else if (document.getElementById("problem4").checked) {
-        var problem = "Eroded Streets";
+        var problem = "Rues érodées";
       } else if (document.getElementById("problem5").checked) {
-        var problem = "Tree Collapse";
+        var problem = "Réduire l'arbre";
       } else if (document.getElementById("problem6").checked) {
-        var problem = "Flooded Streets";
+        var problem = "Rues inondées";
       } else if (document.getElementById("problem7").checked) {
-        var problem = "Mould and Spore Growth";
+        var problem = "Croissance des moisissures et des spores";
       } else if (document.getElementById("problem8").checked) {
-        var problem = "Garbage and Other Road Blocking Objects";
+        var problem = "Déchets et autres objets bloquant la route";
       } else {
-        document.getElementById("response").innerHTML = "No Problem Specified";
+        document.getElementById("response").innerHTML = "Aucun problème spécifié";
         return;
       }
 
@@ -152,7 +154,7 @@
           if (body.error) {
             document.getElementById("response").innerHTML = err;
           } else {
-            document.getElementById("response").innerHTML = "Changes saved!";
+            document.getElementById("response").innerHTML = "Changements sauvegardés!";
           }
         });
     }
