@@ -85,6 +85,8 @@
     document.getElementById("sub").addEventListener("click", () => {
       if (document.getElementById("address").validity.valueMissing) {
         document.getElementById("response").innerHTML = "No Address Specified";
+      } else if (marker == undefined) {
+        document.getElementById("response").innerHTML = "Invalid address";
       } else {
         submitReport();
       }
